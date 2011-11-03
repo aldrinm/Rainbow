@@ -1,0 +1,23 @@
+{
+  "name": "Stackoverflow Rainbow",
+  "version": "1.1",
+  "description": "Sprinkles your interesting tags with a little more color",
+  "background_page": "background.html",
+  "browser_action": {
+	"default_icon": "rainbow.png",
+	"default_popup": "popup.html"
+  },
+  "permissions": [
+	"http://stackoverflow.com"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*.stackoverflow.com/*"],
+      "js": ["jquery-1.6.2.min.js", "rainbow.js"]
+    }
+  ],
+  "icons": { "16": "rainbow.png",
+			"48": "rainbow48.png"
+  }
+
+}

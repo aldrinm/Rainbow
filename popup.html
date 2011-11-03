@@ -1,0 +1,84 @@
+<html>
+<head>
+	<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
+	
+	<script type="text/javascript">
+		$(function(){
+			var tagMap = JSON.parse(localStorage["interestingtags"]);
+			//alert(tagMap['java']);
+			var tagPrefList = ''
+			for (var tag in tagMap) {
+				//alert(tag);
+				tagPrefList += '<li><div class="taglabel">'+tag+'</div> <div class="swatch" style="background-color:'+tagMap[tag]+'"></div> <input value="'+tagMap[tag]+'"></li>' 
+				
+			}
+			
+			$('#interesting-tags').empty().append(tagPrefList);
+			
+			
+			$('#interesting-tags li input').change(function(){
+				$(this).prev().css('background-color', $(this).val())
+			});
+			
+			$('#save').click(function(){
+				$('#interesting-tags li').each(function(){
+					var tagName = $(this).find('.taglabel').text();
+					var tagValue = $(this).find('input').val();
+					tagMap[tagName] = tagValue;
+				});
+				
+				localStorage["interestingtags"] = JSON.stringify(tagMap);
+				
+				window.close();
+				/*
+				chrome.tabs.getSelected(null, function(tab) {
+					chrome.tabs.update(tab.id, { selected: true } )
+				});
+*/
+			});
+		});
+	</script>
+	
+	<style type="text/css">
+		body {
+			font-family: Candara, Verdana, sans-serif;
+			font-size: 10pt;
+		}
+		#interesting-tags {
+			width: 235px;
+			list-style: none outside none;
+			margin: 0;
+			padding: 0 10px;
+		}
+		.taglabel {
+			float:left;
+			padding: 4px 10px;
+			width: 136px;
+		}
+		#interesting-tags li {
+			background-color: #eeeeee;
+			margin: 2px 0;
+		}
+		#interesting-tags li input {
+			width: 54px;
+		}
+		#controls {
+			width: 100%;
+			text-align: center;
+		}
+		.swatch {
+			width: 10px;
+			border: 1px black solid;
+			height: 10px;
+			float: left;
+			margin: 7px 5px;
+		}
+	</style>
+</head>
+<div>
+	<ul id="interesting-tags">
+		
+	</ul>
+	<div id="controls"><input id="save" name="save" type="button" value="save"></div>
+</div>
+</html>
