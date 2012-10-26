@@ -1,23 +1,35 @@
 {
-  "name": "Stackoverflow Rainbow",
-  "version": "1.1",
-  "description": "Sprinkles your interesting tags with a little more color",
-  "background_page": "background.html",
-  "browser_action": {
-	"default_icon": "rainbow.png",
-	"default_popup": "popup.html"
+  "name": "Rainbow Stackoverflow",
+  "version": "2.0",
+  "manifest_version": 2,
+  "description": "Sprinkles your interesting tags with a more color",
+  "background" : {
+    "scripts": ["jquery.1.8.2.min.js", "background.js"]
   },
-  "permissions": [
-	"http://stackoverflow.com"
-  ],
-  "content_scripts": [
+  "page_action" : {
+    "default_icon" : "rainbow48.png",
+    "default_title" : "Rainbow Stackoverflow options",
+    "default_popup": "popup.html"
+  },
+  "content_scripts" : [
     {
-      "matches": ["http://*.stackoverflow.com/*"],
-      "js": ["jquery-1.6.2.min.js", "rainbow.js"]
+      "matches" : [
+        "http://*.stackoverflow.com/*",
+        "https://*.stackoverflow.com/*"
+      ],
+      "js" : ["jquery.1.8.2.min.js", "rainbow.js"],
+      "run_at" : "document_idle",
+      "all_frames" : false
     }
   ],
-  "icons": { "16": "rainbow.png",
-			"48": "rainbow48.png"
+  "permissions": [
+   "storage", "tabs"
+    ],
+  "icons" : {
+    "16": "rainbow16.png",
+    "48" : "rainbow48.png",
+    "128" : "rainbow128.png"
   }
 
 }
+

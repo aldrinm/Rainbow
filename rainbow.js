@@ -1,35 +1,36 @@
-//get all the current interesting tags from the page
-var tagMap
-chrome.extension.sendRequest({getItem: "interestingtags"}, function(response) {
-								var tagMapStr = response.item;
-								if (!tagMapStr) {
-									tagMapStr = JSON.stringify(new Object());
-								}
-								tagMap = JSON.parse(tagMapStr);
+var tagMap = new Object();
 
-								$('#interestingTags > a').each(function(){
-																//alert($(this).text());
-																var tag = $(this).text();
-																if (!tagMap[tag]) tagMap[tag] = '#ffefc6'
-															});	
+//initialize with the user's interested tags and with a default bgcolor
+$('#interestingTags > a').each(function() {
+  var tag = $(this).text();
+  if(!tagMap[tag]) tagMap[tag] = '#e0eaf1';
+});
 
-								chrome.extension.sendRequest({setItem: "interestingtags", value:JSON.stringify(tagMap)});
+//send tagMap to the background.js script to save
+chrome.extension.sendRequest({
+  "tagMap": tagMap
+}, function(response) {
+  sprinkle(response.tagMap);
+});
 
-								sprinkle();
-							});
+//listen for requests from the popup window
+chrome.extension.onMessage.addListener(function(request, sender, sendResponse) {
+  if(request.method == "resprinkle") {
+    sprinkle(request.tagMap);
+    // Send JSON data back to Popup.
+    sendResponse({
+      data: "roger that"
+    });
+  } else {
+    sendResponse({}); // snub them.
+  }
+});
 
-							
-
-
-function sprinkle() {
-	$('#question-mini-list .tagged-interesting').find('a.post-tag').each(function(){
-		var val = $(this).text();
-		//console.log ('val = '+val+'   tagMapStr[val] = '+tagMap[val]);
-		if (tagMap[val]) {
-			$(this).parentsUntil('div.question-summary').parent().css('background-color', tagMap[val]);
-		}
-	});
-	
-
+//sprinkle magic dust
+function sprinkle(tagMap) {
+  $.each(tagMap, function(i, t) {
+    $('a.post-tag').filter(function() {
+      return $(this).text() == i;
+    }).css('background-color', t);
+  })
 }
-

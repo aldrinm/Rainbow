@@ -1,47 +1,13 @@
 <html>
 <head>
-	<script type="text/javascript" src="jquery-1.6.2.min.js"></script>
-	
-	<script type="text/javascript">
-		$(function(){
-			var tagMap = JSON.parse(localStorage["interestingtags"]);
-			//alert(tagMap['java']);
-			var tagPrefList = ''
-			for (var tag in tagMap) {
-				//alert(tag);
-				tagPrefList += '<li><div class="taglabel">'+tag+'</div> <div class="swatch" style="background-color:'+tagMap[tag]+'"></div> <input value="'+tagMap[tag]+'"></li>' 
-				
-			}
-			
-			$('#interesting-tags').empty().append(tagPrefList);
-			
-			
-			$('#interesting-tags li input').change(function(){
-				$(this).prev().css('background-color', $(this).val())
-			});
-			
-			$('#save').click(function(){
-				$('#interesting-tags li').each(function(){
-					var tagName = $(this).find('.taglabel').text();
-					var tagValue = $(this).find('input').val();
-					tagMap[tagName] = tagValue;
-				});
-				
-				localStorage["interestingtags"] = JSON.stringify(tagMap);
-				
-				window.close();
-				/*
-				chrome.tabs.getSelected(null, function(tab) {
-					chrome.tabs.update(tab.id, { selected: true } )
-				});
-*/
-			});
-		});
-	</script>
+	<script type="text/javascript" src="jquery.1.8.2.min.js"></script>
+	<script type="text/javascript" src="popup.js"></script>
+	<link rel="Stylesheet" type="text/css" href="wColorPicker.css" />
+	<script type="text/javascript" src="wColorPicker.js"></script>
 	
 	<style type="text/css">
 		body {
-			font-family: Candara, Verdana, sans-serif;
+			font-family: Calibri, Verdana, sans-serif;
 			font-size: 10pt;
 		}
 		#interesting-tags {
@@ -56,13 +22,15 @@
 			width: 136px;
 		}
 		#interesting-tags li {
-			background-color: #eeeeee;
+			background-color: #EFF3F7;
 			margin: 2px 0;
+			height: 32px;
 		}
 		#interesting-tags li input {
 			width: 54px;
 		}
 		#controls {
+			float: left;
 			width: 100%;
 			text-align: center;
 		}
@@ -73,12 +41,27 @@
 			float: left;
 			margin: 7px 5px;
 		}
+
+		.hoverBox{
+			float:left;
+			margin: 1px;
+			padding: 1px;
+		}
+
+		.content {
+			margin: 10px 40px;
+		}
+
+		#save {
+			padding: 5px 12px;
+		}
+
 	</style>
 </head>
-<div>
+<div class="content">
 	<ul id="interesting-tags">
 		
 	</ul>
-	<div id="controls"><input id="save" name="save" type="button" value="save"></div>
+	<div id="controls"><input id="save" name="save" type="button" value="Save" size="10"></div>
 </div>
 </html>
